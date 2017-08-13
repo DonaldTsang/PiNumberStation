@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
 import subprocess # for calling console
-import math
+# import math
 import time
 import wave
 import sys
-import random
+# import random
 
 #from encryption import encrypt, decrypt
 #enable_encryption = False
@@ -25,18 +25,19 @@ message = "123456789 abcdefghijklmnopqrstuvwxyz"
 repeat = True
 
 loadFromFile = True
-freq = "103.3" #default frequency, will change if run with arguments.
+freq = "108.8" #default frequency, will change if run with arguments.
 
 # Sounds for digits/numbers.
-sounds = ["zero.wav", "one.wav", "two.wav", "three.wav", "four.wav", "five.wav", "six.wav", "seven.wav", "eight.wav", "nine.wav"]
-
+sounds = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Niner"]
 
 # Sounds for alphanumeric. Use NATO Phonetic
-alpha = ["alpha", "bravo", "charlie", "delta",  "echo", "foxtrot", "golf", 
-		"hotel", "india", "juliet", "kilo", "lima", "mike", "november", "oscar",
-		"papa", "quebec", "romeo", "sierra", "tango", "uniform", "victor",
-		"whiskey", "x-ray", "yankee", "zulu"]
+upper = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Georgie", "Hotel",
+    "Item", "Johnny", "Kilo", "Lima", "Monkey", "Nanny", "Oscar", "Papa", "Quebec",
+    "Robert", "Sugar", "Tango", "Uncle", "Victor", "Whisky", "X-ray", "Yankee", "Zeebra"]
 
+lower = ["Abe", "Beer", "Cheeese", "Dog", "Edison", "Fred", "Golf", "How", "India",
+    "Juliet", "King", "Love", "Mike", "November", "Orange", "Pipe", "Queen", "Romeo",
+    "Sierra", "Tom", "Uniform", "Vinegar", "William", "Excellent", "Yoke", "Zoo"]
 
 if (len(sys.argv) > 1):
 	# if arguments present
@@ -53,7 +54,7 @@ def main():
 	'''
 
 	import os.path
-	if (os.path.isfile(sys.path[0] + "/vo/alpha/alpha.wav") == False):
+	if (os.path.isfile(sys.path[0] + "/vo/upper/Alpha.wav") == False):
 		print("Synthesis Failure: NO ALPHANUMERIC SUPPORT")
 		time.sleep(5)
 
@@ -75,19 +76,9 @@ def playMessage():
 	return
 	
 def getVO( character ):
-	if character.isdigit() == True:
-		return sounds[int(character)]
-	else:
-		if character == ',' or character == ' ':
-			return "_comma.wav"
-		if character == '.':
-			return "_period.wav"
-		if character == '\n':
-			return "nova.wav"
-		
-		
-		if character.isalpha() == True:
-			return "/alpha/" + str(alpha[ord(character) - ord('a')] + ".wav")
+	if character.isdigit() == True: return "/number/" + sounds[int(character)] + ".wav" 
+	if character.isupper() == True: return "/upper/" + upper[ord(character) - ord('A')] + ".wav"
+	if character.islower() == True: return "/lower/" + lower[ord(character) - ord('a')] + ".wav"
 		
 	
 def constructWav( strMessage ):
@@ -118,10 +109,8 @@ def constructWav( strMessage ):
 		while (j < buzzer_number):
 			infiles.append(sys.path[0] +"/vo/misc/buzzer.wav")
 			j=j+1
-	else:
-		infiles.append(sys.path[0] + "/vo/_comma.wav")	
 
-	infiles.append(sys.path[0] + "/vo/on3.wav")
+	infiles.append(sys.path[0] + "/vo/misc/on3.wav")
 
 	if monolith_on == True:
 		infiles.append(sys.path[0] + "/vo/misc/monolith.wav")
@@ -131,7 +120,7 @@ def constructWav( strMessage ):
 		print(infiles[i+2])
 		i = i + 1
 		
-	infiles.append(sys.path[0] + "/vo/off3.wav")
+	infiles.append(sys.path[0] + "/vo/misc/off3.wav")
 	
 	#infiles = ["sound_1.wav", "sound_2.wav"]
 	
